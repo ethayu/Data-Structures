@@ -3,46 +3,98 @@ import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InheritA1 extends GraphicsProgram {
-    static final int arenaSize = 500;
+    static final int arenaSize = 50;
+
     public static void main(String[] args) {
         new InheritA1().start(args);
     }
 
-    public void run(){
-        GRect rectangelRange = new GRect(500, 500);
+    public void run() {
+        GRect rectangleRange = new GRect(arenaSize, arenaSize);
+        add(rectangleRange);
         System.out.print("How many bawls?: ");
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        Ball ball = new Ball(100, 100, Color.BLUE);
+        ArrayList<Ball> balls = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            balls.add(new Ball((i + 1) * arenaSize / (n + 1), (i + 1) * arenaSize / (n + 1), 10, 10, Color.BLUE));
+            add(balls.get(i));
+        }
         while (true) {
-            if (ball.getX() <= 0 || ball.getX() + Ball.radius >= arenaSize) ball.xB();
-            if (ball.getY() <= 0 || ball.getY() + Ball.radius >= arenaSize) ball.yB();
-            ball.move();
-            pause(20);
+            for (int i = 0; i < balls.size(); i++) {
+                Ball ball = balls.get(i);
+                if (ball.x - Ball.radius <= -5 || ball.x + Ball.radius >= arenaSize - 5) ball.xB();
+                if (ball.y - Ball.radius <= -5 || ball.y + Ball.radius >= arenaSize - 5) ball.yB();
+                for (int j = i + 1; j < balls.size(); j++) {
+                    Ball otherball = balls.get(j);
+                    if (Ball.isColliding(ball, otherball)) {
+                        ball.r = 2;
+                        otherball.r = 2;
+                        double tangent1 = Math.atan((ball.getY() - otherball.getY())/(ball.getX() - otherball.getX())) * 180 / Math.PI + 90;
+                        double tangent2 = tangent1 + 180;
+                        System.out.println(tangent1);
+                        if (ball.theta < tangent1 + 90) ball.theta = Math.toIntExact(Math.round(tangent2 - ball.theta + tangent1));
+                        else ball.theta = Math.toIntExact(Math.round(tangent1 + tangent2 - ball.theta));
+                        if (otherball.theta < tangent1 + 90) otherball.theta = Math.toIntExact(Math.round(tangent2 - otherball.theta + tangent1));
+                        else otherball.theta = Math.toIntExact(Math.round(tangent1 + tangent2 - otherball.theta));
+                    }
+                }
+                ball.move();
+                pause(1);
+            }
         }
     }
-    class Ball extends GOval {
-        public static final int radius = 20;
-        private int x = 1, y = 1;
+
+    static class Ball extends GOval {
+        public static final int radius = 5;
+        int theta = (int) (Math.random() * 360), x = Math.toIntExact(Math.round(getX())), y = Math.toIntExact(Math.round(getY())), r = 1;
+        boolean flipx = false, flipy = false;
 
 
         public void xB() {
-            x *= -1;
+            if (flipx) {
+                r = 5;
+                flipx = false;
+            }
+            else {
+                theta = 180 - theta;
+                theta %= 360;
+                if (theta == 0 || theta == 180) theta = (int) (Math.random() * 360);
+                flipx = true;
+            }
         }
 
         public void yB() {
-            y *= -1;
+            if (flipy) {
+                r = 5;
+                flipy = false;
+            }
+            else {
+                theta *= -1;
+                theta %= 360;
+                if (theta == 90 || theta == 270) theta = (int) (Math.random() * 360);
+                flipy = true;
+            }
         }
 
-        public Ball(double v, double v1, Color c) {
-            super(v, v1);
+        public Ball(double a, double b, double v, double v1, Color c) {
+            super(a, b, v, v1);
             setColor(c);
         }
+
         public void move() {
-            move(x, y);
+            movePolar(r / 10.0, theta);
+            x = Math.toIntExact(Math.round(getX()));
+            y = Math.toIntExact(Math.round(getY()));
+            if (r != 1) r = 1;
+        }
+
+        static boolean isColliding(Ball a, Ball b) {
+            return (a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()) <= 4 * radius * radius;
         }
     }
 }
