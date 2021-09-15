@@ -6,11 +6,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InheritA1 extends GraphicsProgram {
-    static final int arenaSize = 50;
+public class InheritA1v2 extends GraphicsProgram {
+    static final int arenaSize = 500;
 
     public static void main(String[] args) {
-        new InheritA1().start(args);
+        new InheritA1v2().start(args);
     }
 
     public void run() {
@@ -27,25 +27,15 @@ public class InheritA1 extends GraphicsProgram {
         while (true) {
             for (int i = 0; i < balls.size(); i++) {
                 Ball ball = balls.get(i);
+                if (!ball.isVisible()) continue;
                 if (ball.x - Ball.radius <= -5 || ball.x + Ball.radius >= arenaSize - 5) ball.xB();
                 if (ball.y - Ball.radius <= -5 || ball.y + Ball.radius >= arenaSize - 5) ball.yB();
                 for (int j = i + 1; j < balls.size(); j++) {
                     Ball otherball = balls.get(j);
+                    if (!otherball.isVisible()) continue;
                     if (Ball.isColliding(ball, otherball)) {
-                        ball.r = 2;
-                        otherball.r = 2;
-                        double tangent1 = Math.atan((ball.getY() - otherball.getY())/(ball.getX() - otherball.getX())) * 180 / Math.PI + 90;
-                        double tangent2 = tangent1 + 180;
-                        System.out.println(tangent1);
-                        if (ball.theta < tangent1 + 90) {
-                            ball.theta = Math.toIntExact(Math.round(tangent2 - ball.theta + tangent1));
-                            while (Ball.isColliding(ball, otherball)) ball.move(0.1);
-                        } else {
-                            ball.theta = Math.toIntExact(Math.round(tangent1 + tangent2 - ball.theta));
-                            while (Ball.isColliding(ball, otherball)) ball.move(0.1);
-                        }
-                        if (otherball.theta < tangent1 + 90) otherball.theta = Math.toIntExact(Math.round(tangent2 - otherball.theta + tangent1));
-                        else otherball.theta = Math.toIntExact(Math.round(tangent1 + tangent2 - otherball.theta));
+                        otherball.setVisible(false);
+                        ball.theta = (int) (Math.random() * 360);
                     }
                 }
                 ball.move(1);
@@ -60,19 +50,19 @@ public class InheritA1 extends GraphicsProgram {
 
 
         public void xB() {
-                theta = 180 - theta;
-                theta %= 360;
-                if (theta == 0 || theta == 180) theta = (int) (Math.random() * 360);
-                if (x < arenaSize / 2) x = 1;
-                else x = arenaSize - 1;
+            theta = 180 - theta;
+            theta %= 360;
+            if (theta == 0 || theta == 180) theta = (int) (Math.random() * 360);
+            if (x < arenaSize / 2) x = 1;
+            else x = arenaSize - 1;
         }
 
         public void yB() {
-                theta *= -1;
-                theta %= 360;
-                if (theta == 90 || theta == 270) theta = (int) (Math.random() * 360);
-                if (y < arenaSize / 2) y = 1;
-                else y = arenaSize - 1;
+            theta *= -1;
+            theta %= 360;
+            if (theta == 90 || theta == 270) theta = (int) (Math.random() * 360);
+            if (y < arenaSize / 2) y = 1;
+            else y = arenaSize - 1;
         }
 
         public Ball(double a, double b, double v, double v1, Color c) {
