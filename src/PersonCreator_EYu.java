@@ -1,12 +1,13 @@
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
  * @author Ethan Yu
  */
 
-abstract class Person implements Comparable<Person> {
+abstract class Person implements Comparable<Person>, Cloneable {
 
     static int count = 0;
     private final int year = Year.now().getValue(), id = count++;
@@ -107,10 +108,10 @@ abstract class Person implements Comparable<Person> {
     @Override
     public int compareTo(Person o) {
         if (this instanceof Teacher) {
-            if (o instanceof Student) return 1;
+            if (o instanceof Student) return -1;
             else if (this.lName.compareTo(o.lName) == 0) return this.fName.compareTo(o.fName);
             else return this.lName.compareTo(o.lName);
-        } else if (o instanceof Teacher) return -1;
+        } else if (o instanceof Teacher) return 1;
         else if (this.lName.compareTo(o.lName) == 0) return this.fName.compareTo(o.fName);
         else return this.lName.compareTo(o.lName);
     }
@@ -138,13 +139,12 @@ abstract class Person implements Comparable<Person> {
         return PersonfamilyCount;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
     public String getFQN() {
         return getClass().getName() + "." + hashCode() + "." + getId();
+    }
+
+    public Person clone() throws CloneNotSupportedException {
+        return (Person) super.clone();
     }
 
 }
@@ -431,24 +431,50 @@ class NDTeacher extends Teacher {
 }
 
 public class PersonCreator_EYu {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         /*
             Tester code.
          */
         ArrayList<Person> people = new ArrayList<>();
+        //add people to list and test constructor messages
         people.add(new Student("Bob", "Jones", "Hello"));
         people.add(new Teacher("Bob", "Jonesy", "Hola"));
         people.add(new BCPStudent("Nell", "Bellar", "Knee-how"));
         people.add(new BCPTeacher("Nell", "Bel-air", "Konichiwa"));
         people.add(new NDStudent("Cindy", "Johnson", "Bonjour"));
         people.add(new NDTeacher("Mark", "Jones", "Guten tag"));
-        System.out.println(Person.familyCount() + " " + Person.specificCount());
-        System.out.println(Student.familyCount() + " " + Student.specificCount());
-        System.out.println(Teacher.familyCount() + " " + Teacher.specificCount());
-        System.out.println(BCPStudent.familyCount() + " " + BCPStudent.specificCount());
-        System.out.println(BCPTeacher.familyCount() + " " + BCPTeacher.specificCount());
-        System.out.println(NDStudent.familyCount() + " " + NDStudent.specificCount());
-        System.out.println(NDTeacher.familyCount() + " " + NDTeacher.specificCount());
+
+        //Test count functions
+        System.out.println("\nTest count functions");
+        System.out.println("Person counts (family, specific): " + Person.familyCount() + " " + Person.specificCount());
+        System.out.println("Student counts (family, specific): " + Student.familyCount() + " " + Student.specificCount());
+        System.out.println("Teacher counts (family, specific): " + Teacher.familyCount() + " " + Teacher.specificCount());
+        System.out.println("BCPStudent counts (family, specific): " + BCPStudent.familyCount() + " " + BCPStudent.specificCount());
+        System.out.println("BCPTeacher counts (family, specific): " + BCPTeacher.familyCount() + " " + BCPTeacher.specificCount());
+        System.out.println("NDStudent counts (family, specific): " + NDStudent.familyCount() + " " + NDStudent.specificCount());
+        System.out.println("NDTeacher counts (family, specific): " + NDTeacher.familyCount() + " " + NDTeacher.specificCount());
+
+        //Test greet method
+        System.out.println("\nTest greet method");
+        for (Person person : people) System.out.println(person.greet());
+        //Test toString method
+        System.out.println("\nTest toString method");
+        for (Person person : people) System.out.println(person);
+        //Test FQN method
+        System.out.println("\nTest FQN method");
         for (Person person : people) System.out.println(person.getFQN());
+        //test compareTo through sorting
+        System.out.println("\nTest compareTo via sorting");
+        System.out.println("Before sorting: ");
+        for (Person person : people) System.out.println(person.greet());
+        Collections.sort(people);
+        System.out.println("\nAfter sorting: ");
+        for (Person person : people) System.out.println(person.greet());
+
+        //test equals and cloning
+        System.out.println("\nTest equals and cloning methods (ignore constructor print statements)");
+        Teacher teacher = new Teacher("Bob", "Jonesy", "Hola");
+        System.out.println(teacher.equals(people.get(3)));
+        System.out.println(teacher.equals(teacher.clone()));
     }
 }
