@@ -16,7 +16,7 @@ public class BellArrayListTester {
         arr.add(arr.size(), "4");
         System.out.println(arr);
 
-        arr.add(0, "5");
+        arr.add(0, "12");
         System.out.println(arr);
 
         System.out.println();

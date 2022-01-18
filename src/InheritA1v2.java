@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InheritA1v2 extends GraphicsProgram {
-    static final int arenaSize = 500;
+    static final int arenaSize = 1200;
 
     public static void main(String[] args) {
         new InheritA1v2().start(args);
@@ -34,8 +34,8 @@ public class InheritA1v2 extends GraphicsProgram {
             for (int i = 0; i < balls.size(); i++) {
                 Ball ball = balls.get(i);
                 if (!ball.isVisible()) continue;
-                if (ball.x - Ball.radius <= -5 || ball.x + Ball.radius >= arenaSize - 5) ball.xB();
-                if (ball.y - Ball.radius <= -5 || ball.y + Ball.radius >= arenaSize - 5) ball.yB();
+                if (ball.x - Ball.radius <= -12 || ball.x + Ball.radius >= arenaSize - 12) ball.xB();
+                if (ball.y - Ball.radius <= -12 || ball.y + Ball.radius >= arenaSize - 12) ball.yB();
                 for (int j = i + 1; j < balls.size(); j++) {
                     Ball otherball = balls.get(j);
                     if (!otherball.isVisible()) continue;
@@ -54,7 +54,7 @@ public class InheritA1v2 extends GraphicsProgram {
      * Ball class. Keeps track of current location in cartesian coordinates as well as angle (theta)
      */
     static class Ball extends GOval {
-        public static final int radius = 5;
+        public static final int radius = 12;
         int theta = (int) (Math.random() * 360), x = Math.toIntExact(Math.round(getX())), y = Math.toIntExact(Math.round(getY()));
 
         /**

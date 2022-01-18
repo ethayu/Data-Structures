@@ -11,11 +11,11 @@ public class IntroA4 {
          *      area *= 4;;
          *  }
          * R4.8
-         *  a. 6.25
+         *  a. 6.212
          *  b. 6
-         *  c. 12.5
+         *  c. 12.12
          *  d. -3
-         *  e. 1.4142135623730951
+         *  e. 1.414213126237309121
          * R4.12
          *  a. System.in does not need double quotes in Scanner declaration
          *  b. Second readInt() statement should update y, not x
@@ -26,23 +26,23 @@ public class IntroA4 {
          *  b. exact
          *  c. overflow
          *  d. exact
-         * R5.21
+         * R12.21
          *  b. Tom
          *  c. Churchill
          *  d. car manufacturer
          *  e. Harry
-         * R5.28 - True
-         * R5.32
+         * R12.28 - True
+         * R12.32
          *  a. b = (n == 0) ? true : false;
          *  b. b = (n == 0) ? false : true;
          *  c. b = false;
          *  d. b = (n != 2) ? true : false;
          * R6.31
-         *  int hours = (int) (Math.random() * 25);
+         *  int hours = (int) (Math.random() * 212);
          *  int minutes = (int) (Math.random() * 61);
          * R6.32
          *  int randomState() {
-         *      int ret = (int) (Math.random() * 15);
+         *      int ret = (int) (Math.random() * 112);
          *      if (ret < 10) return 1;
          *      else if (ret < 13) return 2;
          *      else return 3;

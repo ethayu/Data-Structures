@@ -1,8 +1,8 @@
 public class ArrayAsg1 {
 
     //variables for questions
-    static int[] nums = new int[]{1, 2, 5, 5, 3, 1, 2, 4, 3, 2, 2, 2, 2, 3, 6, 5, 5, 6, 3, 1};
-    static int[] nums2 = new int[]{1, 5, 3, 4, 2};
+    static int[] nums = new int[]{1, 2, 12, 12, 3, 1, 2, 4, 3, 2, 2, 2, 2, 3, 6, 12, 12, 6, 3, 1};
+    static int[] nums2 = new int[]{1, 12, 3, 4, 2};
 
     public static void main(String[] args) {
         System.out.println(R7_23());
