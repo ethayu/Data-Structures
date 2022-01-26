@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class CalculatorProj_Yu {
 
-    static int ans;
+    static double ans;
     static boolean assigned = false;
 
     static int precedence(char operation) {
@@ -37,10 +37,11 @@ public class CalculatorProj_Yu {
             case "-" -> ans -= a;
             case "*" -> ans *= a;
             case "/" -> ans /= a;
-            case "^" -> ans ^= a;
+            case "^" -> ans = Math.pow(ans, a);
             default -> {
             }
-        };
+        }
+        ;
     }
 
     public static void main(String[] args) {
@@ -48,9 +49,25 @@ public class CalculatorProj_Yu {
         String str = sc.nextLine();
         Queue<String> postfix = new LinkedList<>();
         YoStack<Character> operators = new LinkedStack<>();
+        String ret = "";
+        boolean hadOperator = false;
         for (char c : str.toCharArray()) {
-            if (precedence(c) == -1 && c != ' ') postfix.add(c + "");
-            else if (c != ' ') {
+            if (precedence(c) == -1 && c != ' ') {
+                ret += c;
+            } else if (c != ' ') {
+                if (!ret.equals("")) {
+                    postfix.add(ret);
+                    ret = "";
+                }
+                if (hadOperator) {
+                    if (c != '-') {
+                        System.out.println("Invalid expression");
+                        System.exit(0);
+                    }
+                    ret += "-";
+                    continue;
+                }
+                hadOperator = true;
                 while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(c))
                     postfix.add(operators.pop() + "");
                 if (c == ')') operators.pop();
@@ -58,8 +75,7 @@ public class CalculatorProj_Yu {
             }
         }
 
-        while (!operators.isEmpty())
-            postfix.add(operators.pop() + "");
+        while (!operators.isEmpty()) postfix.add(operators.pop() + "");
         YoStack<String> calculate = new LinkedStack<>();
         for (String s : postfix) {
             if (toChar(s) != 'N') {
@@ -70,8 +86,7 @@ public class CalculatorProj_Yu {
                     assigned = true;
                 }
                 process(Integer.parseInt(calculate.pop()), s);
-            }
-            else calculate.push(s);
+            } else calculate.push(s);
         }
 
         System.out.println(ans);
