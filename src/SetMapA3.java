@@ -22,7 +22,20 @@ public class SetMapA3 {
                         symbolTable.put(sus[1], Integer.parseInt(sus[2]));
                         break;
                     case "sus":
-                        Calculator.sus(line.substring(line.indexOf(" ") + 1));
+                        String ret = "";
+                        sus[0] = "";
+                        if (sus.length == 2) {
+                            System.out.println("Result: " + symbolTable.get(sus[1]));
+                            break;
+                        }
+                        for (String sussy : sus) {
+                            if (symbolTable.containsKey(sussy)) {
+                                ret += symbolTable.get(sussy) + " ";
+                            } else if (!sussy.equals("")) ret += sussy;
+
+                        }
+                        System.out.println(ret);
+                        System.out.println("Result: " + Calculator.sus(ret));
                         break;
                 }
 
@@ -93,6 +106,7 @@ public class SetMapA3 {
             for (char c : str.toCharArray()) {
                 if (precedence(c) == -1 && c != ' ') { //If current character is not a space or an operator
                     hadOperator = false;
+                    ret += c;
                 } else if (c != ' ') { //If current character is an operator; take care of spaces as well
                     if (!ret.equals("")) { //add number into queue when operator is read
                         postfix.add(ret);
@@ -128,7 +142,7 @@ public class SetMapA3 {
                     calculate.push(process(Double.parseDouble(calculate.pop()), Double.parseDouble(calculate.pop()), s) + ""); //pushes to stack new calculated value
                 } else calculate.push(s); //push numbers to stack
             }
-            return calculate.pop();
+            return "Result: " + calculate.pop();
         }
     }
 
