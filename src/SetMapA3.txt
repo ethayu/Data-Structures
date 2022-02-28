@@ -1,0 +1,67 @@
+public class SetMapA3 {
+    //Following are just code snippets, copied verbatim. As such, there are errors.
+    //https://create.kahoot.it/share/maps-and-hash-browns/06b85c8a-c486-4177-bb52-d9ba59302779
+
+    //12
+    private int ez(String key) {
+        return key.hashCode() % x;
+    }
+
+    //13
+    public Integer put(String key) {
+        SetMapA2.YoHashMap.Entry e = map[hash(key)];
+        if (!containsKey(key)) return null;
+        if (e.key.equals(key)) {
+            size--;
+            int ret = e.value;
+            map[hash(key)] = e.next;
+            return ret;
+        }
+        while (e.next != null) {
+            if (e.next.key.equals(key)) {
+                size--;
+                int ret = e.next.value;
+                e.next = e.next.next;
+                return ret;
+            }
+        }
+        return null;
+    }
+
+    //14
+    private void remove() {
+        size = 0;
+        SetMapA2.YoHashMap.Entry[] newMap = new SetMapA2.YoHashMap.Entry[map.length * 2];
+        for (SetMapA2.YoHashMap.Entry e : map) {
+            while (e != null) {
+                put(e.key, e.value);
+                e = e.next;
+            }
+        }
+        map = newMap;
+    }
+
+    //15
+    public static int hash(int key, int depth, int hash) {
+    //initial depth and hash = 0
+        return depth >= hash ?
+                hash(
+                        key + key % 2,
+                        depth + key,
+                        hash + depth
+                )
+        : hash;
+    }
+
+    //16
+    public static int hash(String key, int depth, int hash) {
+        //initial depth and hash = 0
+        return depth < 4 ?
+                hash(
+                        key + key.charAt(depth % key.length()),
+                        depth + 1,
+                        hash + key.length()
+                )
+                : hash;
+    }
+}
