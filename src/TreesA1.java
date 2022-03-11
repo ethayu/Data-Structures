@@ -37,17 +37,34 @@ public class TreesA1 {
         tree.print();
     }
 
+    /**
+     * A class that represents a node in a binary search tree.
+     * @param <E> the type of element stored in the node
+     */
     static class BSTree<E extends Comparable<E>> {
         private TreeNode root;
 
+        /**
+         * @return the root
+         */
         public BSTree() {
             root = null;
         }
 
+        /**
+         * inserts a value into the tree
+         * @param comparable the value to insert
+         */
         public void insert(Comparable<E> comparable) {
             root = insert(root, comparable);
         }
 
+        /**
+         * recursive method that inserts a value into the tree
+         * @param node the node to insert into
+         * @param comparable the value to insert
+         * @return the node that was inserted into
+         */
         private TreeNode insert(TreeNode node, Comparable<E> comparable) {
             if (node == null) {
                 return new TreeNode(comparable);
@@ -59,11 +76,18 @@ public class TreesA1 {
             return node;
         }
 
+        /**
+         * prints the tree in inorder
+         */
         public void print() {
             print(root);
             System.out.println();
         }
 
+        /**
+         * recursive method that prints the tree in inorder
+         * @param parent the node to print
+         */
         private void print(TreeNode parent) {
             if (parent == null) {
                 return;
